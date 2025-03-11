@@ -1,4 +1,3 @@
-// script.js
 document.addEventListener("DOMContentLoaded", () => {
 	let missionList = document.querySelector("#missionList");
 	let newMissionInput = document.getElementById("newMission");
