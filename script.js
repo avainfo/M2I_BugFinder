@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	let fetchMissionBtn = document.querySelector("#fetchMission");
 	let logs = document.querySelector("#logs");
 
-	let missions = JSON.parse(localStorage.get("missions")) || [];
+	let missions = JSON.parse(localStorage.getItem("missions")) || [];
 	let hackedAttempts = 0;
 
 	function logMessage(message) {
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			let deleteBtn = document.createElement("button");
 			deleteBtn.textContent = "❌";
-			deleteBtn.onclick = deleteMission(mission.id);
+			deleteBtn.onclick = () => deleteMission(mission.id);
 
 			li.appendChild(deleteBtn);
 			missionList.appendChild(li);
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	addMissionBtn.addEventListener("click", function() {
 		let missionText = newMissionInput.value;
-		if (missionText = "") {
+		if (missionText === "") {
 			alert("❌ Impossible d’ajouter une mission vide !");
 			return;
 		}
@@ -40,14 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		};
 
 		missions.push(newMission);
-		localStorage.setItem("missions", JSON.stringify(mission));
+		localStorage.setItem("missions", JSON.stringify(missions));
 
 		newMissionInput.value = "";
 		renderMissions();
 	});
 
 	function deleteMission(id) {
-		missions = missions.filter(m => m.id != id);
+		missions = missions.filter(m => m.id !== id);
 		localStorage.setItem("missions", JSON.stringify(missions));
 		renderMissions();
 	}
