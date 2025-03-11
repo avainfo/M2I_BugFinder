@@ -1,9 +1,9 @@
 import { getAgents, addAgent } from "./agentManager.js";
-import { getMissions, fetchMission } from "./missionManager.js";
-import { playAlertSound } from "./utils.js";
+import { getMissions , fetchMission} from "./missionManager.js";
+import {saveToStorage} from "/scripts/storage.js";
 
-const agentList = document.querySelectorAll("#agentList");
-const missionList = document.querySelectorAll("#missionList");
+const agentList = document.getElementById("agentList");
+const missionList = document.getElementById("missionList");
 const addAgentBtn = document.querySelector("#addAgent");
 const fetchMissionBtn = document.querySelector("#fetchMission");
 
@@ -12,14 +12,24 @@ function init() {
 	renderMissions();
 
 	addAgentBtn.addEventListener("click", () => {
-		addAgent(prompt("Nom de l'agent ?"));
-		renderMissions();
+		try {
+			const name = prompt("Nom de l'agent ?");
+			if (name) {
+				addAgent(name);
+				renderAgents();
+				saveToStorage("agents", JSON.stringify(getAgents()));
+			}
+		} catch (e) {
+			console.error(e);
+		}
 	});
+
 
 	fetchMissionBtn.addEventListener("click", async () => {
 		try {
 			let mission = await fetchMission();
 			renderMissions();
+			saveToStorage("mission", JSON.stringify(mission));
 		} catch (err) {
 			console.error("Erreur lors de la récupération des missions", err);
 		}
@@ -38,12 +48,18 @@ function renderAgents() {
 
 function renderMissions() {
 	let missions = getMissions();
-	missionList.innerHTML = "";
-	missions.forEach(mission => {
-		let li = document.createElement("li");
-		li.textContent = mission;
-		missionList.appendChild(li);
-	});
+	console.log(missions);
+	if (Array.isArray(missions)) {
+		missionList.innerHTML = "";
+		missions.forEach(mission => {
+			let li = document.createElement("li");
+			li.textContent = mission;
+			missionList.appendChild(li);
+		});
+	} else {
+		console.error("missions n'est pas un tableau:", missions);
+	}
 }
+
 
 init();

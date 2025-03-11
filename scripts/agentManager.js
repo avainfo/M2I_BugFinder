@@ -1,6 +1,6 @@
 import { saveToStorage, loadFromStorage } from "./storage.js";
 
-let agents = loadFromStorage("agents") || ["James Bond", "Ethan Hunt"];
+let agents = JSON.parse(loadFromStorage("agents")) || ["James Bond", "Ethan Hunt"];
 
 export function getAgents() {
 	return agents;
