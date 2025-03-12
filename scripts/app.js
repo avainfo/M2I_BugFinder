@@ -14,7 +14,7 @@ function init() {
 	addAgentBtn.addEventListener("click", () => {
 		try {
 			const name = prompt("Nom de l'agent ?");
-			if (name) {
+			if (name.trim()) {
 				addAgent(name);
 				renderAgents();
 				saveToStorage("agents", JSON.stringify(getAgents()));
