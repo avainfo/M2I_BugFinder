@@ -1,5 +1,5 @@
-import { saveToStorage, loadFromStorage } from "./storage.js";
-import { fetchFromAPI } from "./api.js";
+import {saveToStorage, loadFromStorage} from "./storage.js";
+import {fetchFromAPI} from "./api.js";
 
 let missions = loadFromStorage("missions") || [];
 
@@ -8,7 +8,9 @@ export function getMissions() {
 }
 
 export async function fetchMission() {
-	let newMission = await fetchFromAPI("/missions/random");
-	missions.push(newMission);
-	saveToStorage("missions", missions);
+	let newMission = await fetchFromAPI("/todos/" + Math.round(Math.random() * 199 + 1));
+	if(newMission !== null) {
+		missions.push(newMission);
+		saveToStorage("missions", missions);
+	}
 }

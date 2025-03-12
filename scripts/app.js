@@ -2,8 +2,8 @@ import { getAgents, addAgent } from "./agentManager.js";
 import { getMissions, fetchMission } from "./missionManager.js";
 import { playAlertSound } from "./utils.js";
 
-const agentList = document.querySelectorAll("#agentList");
-const missionList = document.querySelectorAll("#missionList");
+const agentList = document.querySelector("#agentList");
+const missionList = document.querySelector("#missionList");
 const addAgentBtn = document.querySelector("#addAgent");
 const fetchMissionBtn = document.querySelector("#fetchMission");
 
@@ -13,14 +13,15 @@ function init() {
 
 	addAgentBtn.addEventListener("click", () => {
 		addAgent(prompt("Nom de l'agent ?"));
-		renderMissions();
+		renderAgents();
 	});
 
 	fetchMissionBtn.addEventListener("click", async () => {
 		try {
-			let mission = await fetchMission();
+			await fetchMission();
 			renderMissions();
 		} catch (err) {
+			playAlertSound();
 			console.error("Erreur lors de la récupération des missions", err);
 		}
 	});
